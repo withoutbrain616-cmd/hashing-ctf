@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hashing Basics CTF</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="{{ url_for('index') }}">⌁ HASH<span>CTF</span></a><nav><a href="{{ url_for('index') }}">Topshiriqlar</a><a href="{{ url_for('leaderboard') }}">Reyting</a></nav></header>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">4-LAB • KIBERXAVFSIZLIK AMALIYOTI</div>
+    <h1>Hashing <span>Basics</span></h1>
+    <p>Xeshlarni tahlil qiling, fayl yaxlitligini tekshiring va 6 ta flagni toping.</p>
+    <div class="stats"><div><strong>{{ solved_count }}/6</strong><small>Yechilgan</small></div><div><strong>{{ score }}</strong><small>Ball</small></div><div><strong>600</strong><small>Maksimal ball</small></div></div>
+  </section>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+  <section class="team-panel">
+    <form method="post" class="team-form"><label for="team">Jamoa nomi</label><div class="inline"><input id="team" name="team" maxlength="40" placeholder="Masalan, Hash Hunters" value="{{ team or '' }}" required><button type="submit">Jamoani saqlash</button></div></form>
+    {% if team %}<p class="muted">Faol jamoa: <strong>{{ team }}</strong></p>{% else %}<p class="muted">Topshiriqlarni ochish uchun jamoa nomini kiriting.</p>{% endif %}
+  </section>
+  <div class="section-head"><div><div class="eyebrow">CHALLENGES</div><h2>Topshiriqlar</h2></div><span class="pill">6 TASKS</span></div>
+  <section class="cards">
+  {% for c in challenges %}
+    <article class="challenge-card {% if c.solved %}done{% endif %}">
+      <div class="card-top"><span class="number">{{ "%02d"|format(c.id) }}</span><span class="points">+{{ c.points }} pts</span></div>
+      <h3>{{ c.title }}</h3><p>{{ c.topic }}</p>
+      <div class="card-bottom"><span class="difficulty">{{ c.level }}</span>{% if c.solved %}<span class="solved">✓ Yechilgan</span>{% elif team %}<a class="text-link" href="{{ url_for('challenge', challenge_id=c.id) }}">Boshlash →</a>{% else %}<span class="muted">Jamoa kiriting</span>{% endif %}</div>
+    </article>
+  {% endfor %}
+  </section>
+  <aside class="notice"><strong>Qoidalar</strong><p>Har bir flag <code>FLAG{...}</code> formatida. Buyruqlarni Kali Linux terminalida bajaring. Barcha topshiriqlar faqat ushbu o‘quv CTF muhiti uchun mo‘ljallangan.</p></aside>
+  <footer>Hashing Basics CTF <span>•</span> Local training environment</footer>
+</main>
+</body></html>

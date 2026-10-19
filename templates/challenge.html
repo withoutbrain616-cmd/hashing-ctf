@@ -1,0 +1,12 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ c.title }} — HashCTF</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><header class="topbar"><a class="brand" href="{{ url_for('index') }}">⌁ HASH<span>CTF</span></a><nav><a href="{{ url_for('index') }}">Topshiriqlar</a><a href="{{ url_for('leaderboard') }}">Reyting</a></nav></header>
+<main class="wrap narrow"><a class="back" href="{{ url_for('index') }}">← Barcha topshiriqlar</a>
+  <section class="task-hero"><div class="card-top"><span class="number">{{ "%02d"|format(c.id) }}</span><span class="points">+{{ c.points }} pts</span></div><div class="eyebrow">CHALLENGE {{ c.id }} / 6</div><h1>{{ c.title }}</h1><p>{{ c.topic }}</p></section>
+  {% if message %}<div class="flash {{ message[0] }}">{{ message[1] }}</div>{% endif %}
+  <section class="panel"><h2>Vazifa</h2><p>{{ c.description }}</p><pre>{{ c.data }}</pre>
+    <details><summary>Maslahat</summary><pre>{{ c.hint }}</pre></details>
+    {% if solved %}<div class="success-box"><strong>✓ Topshiriq yechilgan</strong><p>{{ c.explanation }}</p></div>{% else %}
+    <form method="post" class="flag-form"><label for="flag">Flagni kiriting</label><div class="inline"><input id="flag" name="flag" placeholder="FLAG{...}" autocomplete="off" required><button type="submit">Tekshirish</button></div></form>
+    {% endif %}
+  </section><div class="task-foot"><span>Jamoa: <strong>{{ team }}</strong></span><span>Joriy ball: <strong>{{ score }}</strong></span></div>
+</main></body></html>
