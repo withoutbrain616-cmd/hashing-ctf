@@ -152,12 +152,20 @@ def save_score():
                         (team, score, ",".join(solved), datetime.now().isoformat(timespec="seconds")))
         con.commit()
 
+
 @app.route("/leaderboard")
 def leaderboard():
     with sqlite3.connect(DB_PATH) as con:
         con.row_factory = sqlite3.Row
-        rows = con.execute("SELECT team, score, solved, updated_at FROM leaderboard ORDER BY score DESC, updated_at ASC").fetchall()
+        rows = con.execute(
+            """SELECT team, score, solved, updated_at
+               FROM leaderboard
+               WHERE lower(trim(team)) NOT IN (?, ?)
+               ORDER BY score DESC, updated_at ASC""",
+            ("zero", "vali")
+        ).fetchall()
     return render_template("leaderboard.html", rows=rows)
+
 
 @app.route("/reset")
 def reset():
